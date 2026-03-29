@@ -1,0 +1,52 @@
+using System;
+using System.Collections.Generic;
+using System.Text.Json;
+
+namespace testme
+{
+    public class Datum
+    {
+        public int Den { get; set; }
+        public int Mesic { get; set; }
+        public int Rok { get; set; }
+
+        public Datum(int den, int mesic, int rok)
+        {
+            Den = den;
+            Mesic = mesic;
+            Rok = rok;
+        }
+
+        public void PrintDate() => Console.WriteLine($"{Den}.{Mesic}.{Rok}");
+    }
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            try
+            {
+                Datum dnes = new Datum(29, 3, 2026);
+                Datum zitra = new Datum(30, 3, 2026);
+
+                // FIX: Název proměnné bez mezery (používáme CamelCase nebo podtržítko)
+                var dataKSerializaci = new List<Datum> { dnes, zitra };
+
+                var options = new JsonSerializerOptions { WriteIndented = true };
+
+                // FIX: Název proměnné musí sedět s definicí výše
+                string json = JsonSerializer.Serialize(dataKSerializaci, options);
+
+                Console.WriteLine("Výsledný JSON:");
+                Console.WriteLine(json);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"// ERROR: {ex.Message}");
+            }
+
+            Console.WriteLine("\nStiskněte libovolnou klávesu...");
+            Console.ReadKey();
+        }
+    }
+}
